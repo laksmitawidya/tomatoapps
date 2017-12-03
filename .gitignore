@@ -56,3 +56,6 @@ buck-out/
 #
 .env.example
 .env
+
+# Ignite
+ignite/
