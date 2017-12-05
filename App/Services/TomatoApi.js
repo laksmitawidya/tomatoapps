@@ -1,3 +1,4 @@
+
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
 import AppConfig from '../Config/AppConfig'
@@ -14,14 +15,42 @@ const create = (baseURL = AppConfig.baseURL) => {
     baseURL,
     // here are some default headers
     headers: {
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-cache',
+      'Content-Type': 'application/json',
+      'user-key': AppConfig.token
     },
     // 10 second timeout...
     timeout: 10000
   })
 
-  if(__DEV__ && console.tron){
-    api.addMonitor(console.tron.apisauce)
+ 
+  const callApi=(path, type, body)=>{
+      var bodyJson={}
+      if(type !=='GET'){
+          bodyJson = JSON.parse(body)
+      }
+      if(type ==='POST'){
+          return api.post(path, bodyJson)
+      } else if(type==='PUT'){
+          return api.put(path, bodyJson)
+      } else if(type==='DELETE'){
+          return api.delete(path, bodyJson)
+      } else {
+          api.setHeaders({
+              'Content-Type':'application/json',
+              'user-key': AppConfig.token
+
+          })
+          if(path.includes('nearest_properties')){
+              api.timeout=60000
+          }else{
+              api.timeout=30000
+          } 
+          return api.get(path)
+      }
+  }
+  return {
+      callApi
   }
   // ------
   // STEP 2
@@ -37,7 +66,6 @@ const create = (baseURL = AppConfig.baseURL) => {
   // Since we can't hide from that, we embrace it by getting out of the
   // way at this level.
   //
-  const getCategories = () => api.get('categories')
   //const getUser = (username) => api.get('search/users', {q: username})
 
   // ------
@@ -52,10 +80,7 @@ const create = (baseURL = AppConfig.baseURL) => {
   // because it is scoped privately.  This is one way to create truly
   // private scoped goodies in JavaScript.
   //
-  return {
-    // a list of the API functions from step 2
-    getCategories
-  }
+  
 }
 
 // let's return back our create method as the default.

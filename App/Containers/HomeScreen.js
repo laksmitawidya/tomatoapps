@@ -6,6 +6,8 @@ import { Images, Metrics, Colors } from '../Themes'
 import { Dropdown } from 'react-native-material-dropdown'
 import { SearchBar, Avatar, ListItem, Card, Button, List} from 'react-native-elements'
 import style from '../Components/Styles/TomatoStyles'
+import {connect} from 'react-redux'
+import TomatoActions from '../Redux/TomatoRedux'
 
 let data = [{
   value: 'Banana',
@@ -34,6 +36,44 @@ const users = [
 
 
 export default class HomeScreen extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      categoryName:'',
+      categoryId: 0
+    }
+  }
+
+  setupCategories () {
+    if (!this.props.categoriesPayload) {
+      this.props.categoriesRequest
+    } else {
+      this.setState({
+        categoryName: this.props.categoriesPayload.category_name,
+        categoryId: this.props.categoriesPayload.category_id
+      })
+    }
+  }
+
+  checkCategories (newProps) {
+    if (newProps.categoriesPayload) {
+      this.setState({
+        categoryName: newProps.categoriesPayload.category_name,
+        categoryId: newProps.categoriesPayload.category_id
+      })
+    }
+  }
+
+  componentWillMount () {
+    // setup initial Categories if Redux exist
+    this.setupCategories()
+  }
+
+  componentWillReceiveProps (newProps) {
+    // check new Categories after request the categories
+    this.checkCategories(newProps)
+  }
 
   _handleStories (navigate) {
     navigate('CountryListScreen')
