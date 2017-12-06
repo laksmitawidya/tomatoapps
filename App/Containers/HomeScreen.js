@@ -35,7 +35,7 @@ const users = [
 ]
 
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
   constructor (props) {
     super(props)
 
@@ -47,7 +47,7 @@ export default class HomeScreen extends Component {
 
   setupCategories () {
     if (!this.props.categoriesPayload) {
-      this.props.categoriesRequest
+      this.props.categoriesRequest()
     } else {
       this.setState({
         categoryName: this.props.categoriesPayload.category_name,
@@ -106,7 +106,7 @@ export default class HomeScreen extends Component {
             title={user.name}
             image={{uri:user.avatar}}>
             <Text style={{marginBottom: 10}}>
-              {user.description}
+              {this.state.categoryName}
             </Text> 
             <Button
               onPress={() => this._handleClick(navigate)}
@@ -129,3 +129,21 @@ export default class HomeScreen extends Component {
       )
   }
 }
+
+HomeScreen.propTypes = {}
+
+const mapStateToProps = (state) => {
+  return {
+    chapterPayload: state.tomato.chapterPayload,
+    chapterError: state.tomato.chapterError,
+    chapterFetching: state.tomato.chapterFetching
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    tomatoRequest: () => dispatch(TomatoActions.categoriesRequest())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
