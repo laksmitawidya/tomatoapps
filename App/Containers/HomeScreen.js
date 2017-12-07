@@ -134,9 +134,9 @@ HomeScreen.propTypes = {}
 
 const mapStateToProps = (state) => {
   return {
-    chapterPayload: state.tomato.chapterPayload,
-    chapterError: state.tomato.chapterError,
-    chapterFetching: state.tomato.chapterFetching
+    categoriesPayload: state.tomato.categoriesPayload,
+    categoriesError: state.tomato.categoriesError,
+    categoriesFetching: state.tomato.categoriesFetching
   }
 }
 
