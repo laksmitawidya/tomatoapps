@@ -5,15 +5,15 @@ import AppConfig from '../Config/AppConfig'
 import TomatoApi from '../Services/TomatoApi'
 
 export function * categoriesRequest () {
-  try {
-    const response = yield call(TomatoApi.callApi(AppConfig.baseURL+"categories", "GET",""))
-  } catch (e) {
-    console.log(e.message);
-  }
+  // make the call to the api
+  const response = yield call(TomatoApi.callApi(AppConfig.baseURL+"categories", "GET",""))
+  
 
-  if (response.ok) {
+  if (response.status === 200) {
     yield put(TomatoActions.categoriesSuccess(response))
+    console.log("response :", response)
   } else {
     yield put(TomatoActions.categoriesFailure(response.error))
+    console.warn("error");
   }
 }

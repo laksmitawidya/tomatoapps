@@ -135,15 +135,15 @@ HomeScreen.propTypes = {}
 
 const mapStateToProps = (state) => {
   return {
-    categoriesPayload: state.tomato.chapterPayload,
-    categoriesError: state.tomato.chapterError,
-    categoriesFetching: state.tomato.chapterFetching
+    categoriesPayload: state.tomato.categoriesPayload,
+    categoriesError: state.tomato.categoriesError,
+    categoriesFetching: state.tomato.categoriesFetching
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    categoriesRequest:() => dispatch(TomatoActions.categoriesRequest())
+    categoriesRequest: () => dispatch(TomatoActions.categoriesRequest())
   }
 }
 
