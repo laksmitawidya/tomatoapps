@@ -22,18 +22,18 @@ export const INITIAL_STATE = Immutable({
 
 /* ------------- Reducers ------------- */
 
-export const categoriesRequest = (state) => {
+export const categoriesRequest = (state) => 
   state.merge({ categoriesFetching: true })
-}
+
 
 export const categoriesSuccess = (state, action) => {
     const { categoriesPayload } = action
     return state.merge({ categoriesFetching:false, categoriesError:null, categoriesPayload })
 }
 
-export const categoriesFailure = (state, action) => {
+export const categoriesFailure = (state, action) => 
     state.merge({ categoriesFetching: false, categoriesError: action.categoriesError })
-}
+
 
 /* ------------- Hookup Reducers To Types ------------- */
 

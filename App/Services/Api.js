@@ -14,7 +14,9 @@ const create = (baseURL = AppConfig.baseURL) => {
     baseURL,
     // here are some default headers
     headers: {
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-cache',
+      'Accept': 'application/json',
+      'user-key': AppConfig.token
     },
     // 10 second timeout...
     timeout: 10000

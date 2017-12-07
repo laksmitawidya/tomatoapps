@@ -1,5 +1,6 @@
 import { takeLatest, all } from 'redux-saga/effects'
 import API from '../Services/Api'
+import TomatoApi from '../Services/TomatoApi'
 import FixtureAPI from '../Services/FixtureApi'
 import DebugConfig from '../Config/DebugConfig'
 
@@ -11,14 +12,13 @@ import { TomatoTypes } from '../Redux/TomatoRedux'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-import { getUserAvatar } from './GithubSagas'
 import { categoriesRequest } from './TomatoSagas'
 
 /* ------------- API ------------- */
 
 // The API we use is only used from Sagas, so we create it here and pass along
 // to the sagas which need it.
-const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
+const api = DebugConfig.useFixtures ? FixtureAPI : TomatoApi.create()
 
 /* ------------- Connect Types To Sagas ------------- */
 
@@ -29,5 +29,6 @@ export default function * root () {
 
     // some sagas receive extra parameters in addition to an action
     takeLatest(TomatoTypes.CATEGORIES_REQUEST, categoriesRequest)
+    
   ])
 }

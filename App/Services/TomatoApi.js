@@ -16,7 +16,7 @@ const create = (baseURL = AppConfig.baseURL) => {
     // here are some default headers
     headers: {
       'Cache-Control': 'no-cache',
-      'Content-Type': 'application/json',
+      'Accept' : 'application/json',
       'user-key': AppConfig.token
     },
     // 10 second timeout...
@@ -37,9 +37,8 @@ const create = (baseURL = AppConfig.baseURL) => {
           return api.delete(path, bodyJson)
       } else {
           api.setHeaders({
-              'Content-Type':'application/json',
-              'user-key': AppConfig.token
-
+            'Accept': 'application/json',
+            'user-key': AppConfig.token
           })
           if(path.includes('nearest_properties')){
               api.timeout=60000

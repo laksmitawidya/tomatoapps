@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Image, View, Platform, Text, StyleSheet } from 'react-native'
+import {ActivityIndicator, ScrollView, Image, View, Platform, Text, StyleSheet } from 'react-native'
 import  HeaderComponents  from '../Components/HeaderComponent'
 import  FooterComponent  from '../Components/FooterComponent'
 import { Images, Metrics, Colors } from '../Themes'
@@ -40,7 +40,7 @@ class HomeScreen extends Component {
     super(props)
 
     this.state = {
-      categoryName:'',
+      categoryName:null,
       categoryId: 0
     }
   }
@@ -108,6 +108,7 @@ class HomeScreen extends Component {
             <Text style={{marginBottom: 10}}>
               {this.state.categoryName}
             </Text> 
+            <ActivityIndicator fetching={this.props.categoriesFetching} />
             <Button
               onPress={() => this._handleClick(navigate)}
               icon={{name: 'restaurant'}}
@@ -134,15 +135,15 @@ HomeScreen.propTypes = {}
 
 const mapStateToProps = (state) => {
   return {
-    chapterPayload: state.tomato.chapterPayload,
-    chapterError: state.tomato.chapterError,
-    chapterFetching: state.tomato.chapterFetching
+    categoriesPayload: state.tomato.chapterPayload,
+    categoriesError: state.tomato.chapterError,
+    categoriesFetching: state.tomato.chapterFetching
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    tomatoRequest: () => dispatch(TomatoActions.categoriesRequest())
+    categoriesRequest:() => dispatch(TomatoActions.categoriesRequest())
   }
 }
 
