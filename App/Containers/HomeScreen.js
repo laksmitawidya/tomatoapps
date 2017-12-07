@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {ActivityIndicator, ScrollView, Image, View, Platform, Text, StyleSheet } from 'react-native'
+import { ScrollView, Image, View, Platform, Text, StyleSheet } from 'react-native'
 import  HeaderComponents  from '../Components/HeaderComponent'
 import  FooterComponent  from '../Components/FooterComponent'
 import { Images, Metrics, Colors } from '../Themes'
@@ -40,7 +40,8 @@ class HomeScreen extends Component {
     super(props)
 
     this.state = {
-      categoryName:null,
+      categories: [],
+      categoryName:'',
       categoryId: 0
     }
   }
@@ -50,8 +51,7 @@ class HomeScreen extends Component {
       this.props.categoriesRequest()
     } else {
       this.setState({
-        categoryName: this.props.categoriesPayload.category_name,
-        categoryId: this.props.categoriesPayload.category_id
+        categories: this.props.categoriesPayload.categories,
       })
     }
   }
@@ -59,8 +59,7 @@ class HomeScreen extends Component {
   checkCategories (newProps) {
     if (newProps.categoriesPayload) {
       this.setState({
-        categoryName: newProps.categoriesPayload.category_name,
-        categoryId: newProps.categoriesPayload.category_id
+        categories: newProps.categoriesPayload.categories,
       })
     }
   }
@@ -95,20 +94,19 @@ class HomeScreen extends Component {
               // onChangeText={someMethod}
               // onClearText={someMethod}
               placeholder='Type Here...' />
-            </View> 
+            </View>
         </View>
         <View>
         {
-          users.map((user, i) => {
+          this.state.categories.map((cat, i) => {
           return (
           <Card
             key={i}
-            title={user.name}
-            image={{uri:user.avatar}}>
+            title={cat.categories.name}
+            image={{uri:'https://static.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg'}}>
             <Text style={{marginBottom: 10}}>
-              {this.state.categoryName}
-            </Text> 
-            <ActivityIndicator fetching={this.props.categoriesFetching} />
+              {cat.categories.name}
+            </Text>
             <Button
               onPress={() => this._handleClick(navigate)}
               icon={{name: 'restaurant'}}
