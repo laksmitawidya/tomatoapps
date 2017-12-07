@@ -9,7 +9,7 @@ export function * categoriesRequest () {
   const response = yield call(TomatoApi.callApi(AppConfig.baseURL+"categories", "GET",""))
   
 
-  if (request.status === 200) {
+  if (response.status === 200) {
     yield put(TomatoActions.categoriesSuccess(response))
     console.log("response :", response)
   } else {
