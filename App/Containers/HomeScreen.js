@@ -142,7 +142,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    tomatoRequest: () => dispatch(TomatoActions.categoriesRequest())
+    categoriesRequest: () => dispatch(TomatoActions.categoriesRequest())
   }
 }
 
