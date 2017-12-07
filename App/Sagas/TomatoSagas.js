@@ -7,11 +7,13 @@ import TomatoApi from '../Services/TomatoApi'
 export function * categoriesRequest () {
   // make the call to the api
   const response = yield call(TomatoApi.callApi(AppConfig.baseURL+"categories", "GET",""))
-  console.log("response :", response)
+  
 
-  if (response.ok) {
+  if (request.status === 200) {
     yield put(TomatoActions.categoriesSuccess(response))
+    console.log("response :", response)
   } else {
     yield put(TomatoActions.categoriesFailure(response.error))
+    console.warn("error");
   }
 }
