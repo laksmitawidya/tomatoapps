@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
-import { ScrollView, Image, View, Platform, Text, StyleSheet } from 'react-native'
+import { ScrollView, Image, View, Platform, Text, StyleSheet, ListView} from 'react-native'
 import  HeaderComponents  from '../Components/HeaderComponent'
 import  FooterComponent  from '../Components/FooterComponent'
+import  CustomActivityIndicator  from '../Components/CustomActivityIndicator'
 import { Images, Metrics, Colors } from '../Themes'
 import { Dropdown } from 'react-native-material-dropdown'
-import { SearchBar, Avatar, ListItem, Card, Button, List} from 'react-native-elements'
+import { SearchBar, Avatar, Card, Button} from 'react-native-elements'
 import style from '../Components/Styles/TomatoStyles'
 import {connect} from 'react-redux'
 import TomatoActions from '../Redux/TomatoRedux'
+import { Container, Header, Content, List, ListItem, Thumbnail, Body } from 'native-base';
+
+
 
 let data = [{
   value: 'Banana',
@@ -16,34 +20,20 @@ let data = [{
 }, {
   value: 'Pear',
 }];
-const users = [
-  {
-    name: 'Soup',
-    avatar: 'https://static.pexels.com/photos/2232/vegetables-italian-pizza-restarestaurant.jpg',
-    description: 'The idea with React Native Elements is more about component structure than actual design.'
-  },
-  {
-    name: 'Cream',
-    avatar: 'https://static.pexels.com/photos/70497/pexels-photo-70497.jpeg',
-    description: 'The idea with React Native Elements is more about component structure than actual design.'
-  },
-  {
-    name: 'Coffee',
-    avatar: 'https://static.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg',
-    description: 'The idea with React Native Elements is more about component structure than actual design.'
-  }
-]
 
 
 class HomeScreen extends Component {
   constructor (props) {
     super(props)
-
+    const ds = new ListView.DataSource({ 
+      rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       categories: [],
       categoryName:'',
-      categoryId: 0
+      categoryId: 0,
+      dataSource: ds.cloneWithRows(['row 1', 'row 2']) 
     }
+    
   }
 
   setupCategories () {
@@ -64,6 +54,7 @@ class HomeScreen extends Component {
     }
   }
 
+ 
   componentWillMount () {
     // setup initial Categories if Redux exist
     this.setupCategories()
@@ -80,9 +71,9 @@ class HomeScreen extends Component {
   _handleClick (navigate) {
     navigate('DetailScreen')
   }
+
   render () {
     const { navigate } = this.props.navigation
-    buttonsListArr = [];
     return (
     <View style={{ flex:1 }}>
       <ScrollView>
@@ -96,6 +87,16 @@ class HomeScreen extends Component {
               placeholder='Type Here...' />
             </View>
         </View>
+        <CustomActivityIndicator fetching={this.props.categoriesFetching}/>
+        {/* <View>
+            <ListView 
+            dataSource = { this.state.dataSource } 
+            renderRow = { (rowData) => 
+            <Text>  
+              { rowData } 
+            </Text> } 
+            /> 
+        </View> */}
         <View>
         {
           this.state.categories.map((cat, i) => {
@@ -103,10 +104,7 @@ class HomeScreen extends Component {
           <Card
             key={i}
             title={cat.categories.name}
-            image={{uri:'https://static.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg'}}>
-            <Text style={{marginBottom: 10}}>
-              {cat.categories.name}
-            </Text>
+            image={{uri:'http://lorempixel.com/400/200/food'}}>
             <Button
               onPress={() => this._handleClick(navigate)}
               icon={{name: 'restaurant'}}
@@ -119,6 +117,7 @@ class HomeScreen extends Component {
           })
         }
         </View>
+        
         </ScrollView>
         <View>
             <FooterComponent bgColor={Colors.maroon}></FooterComponent>

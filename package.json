@@ -39,6 +39,7 @@
     "react-native-elements": "^0.18.4",
     "react-native-image-header": "^1.0.1",
     "react-native-image-header-scroll-view": "^0.7.0",
+    "react-native-indicators": "^0.10.0",
     "react-native-maps": "^0.18.3",
     "react-native-material-dropdown": "^0.6.0",
     "react-native-vector-icons": "^4.4.2",

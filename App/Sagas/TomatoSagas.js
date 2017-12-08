@@ -15,8 +15,6 @@ export function * categoriesRequest () {
   } else {
     yield put(TomatoActions.categoriesFailure(response.error))
     console.log("error");
-  }
-
-  
+  }  
 }
 
