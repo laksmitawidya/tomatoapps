@@ -8,13 +8,13 @@ const Api = TomatoApi.create()
 export function * categoriesRequest () {
   // make the call to the api
   const response = yield call(Api.callApi, AppConfig.baseURL+"categories", "GET","")
-
+  console.log("response :", response)
   if (response.status === 200) {
     yield put(TomatoActions.categoriesSuccess(response.data))
     console.log("response :", response)
   } else {
     yield put(TomatoActions.categoriesFailure(response.error))
-    console.warn("error");
+    console.log("error");
   }
 
   
