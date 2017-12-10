@@ -5,21 +5,12 @@ import  FooterComponent  from '../Components/FooterComponent'
 import  CustomActivityIndicator  from '../Components/CustomActivityIndicator'
 import { Images, Metrics, Colors } from '../Themes'
 import { Dropdown } from 'react-native-material-dropdown'
-import { SearchBar, Avatar, Card, Button} from 'react-native-elements'
+import { h1, SearchBar, Avatar, Card, Button} from 'react-native-elements'
 import style from '../Components/Styles/TomatoStyles'
 import {connect} from 'react-redux'
 import TomatoActions from '../Redux/TomatoRedux'
 import { Container, Header, Content, List, ListItem, Thumbnail, Body } from 'native-base';
 
-
-
-let data = [{
-  value: 'Banana',
-}, {
-  value: 'Mango',
-}, {
-  value: 'Pear',
-}];
 
 
 class HomeScreen extends Component {
@@ -31,7 +22,7 @@ class HomeScreen extends Component {
       categories: [],
       categoryName:'',
       categoryId: 0,
-      dataSource: ds.cloneWithRows(['row 1', 'row 2']) 
+      dataSource: ds.cloneWithRows([]) 
     }
     
   }
@@ -42,6 +33,7 @@ class HomeScreen extends Component {
     } else {
       this.setState({
         categories: this.props.categoriesPayload.categories,
+        dataSource: this.state.dataSource.cloneWithRows(this.props.categoriesPayload.categories)
       })
     }
   }
@@ -50,6 +42,7 @@ class HomeScreen extends Component {
     if (newProps.categoriesPayload) {
       this.setState({
         categories: newProps.categoriesPayload.categories,
+        dataSource: this.state.dataSource.cloneWithRows(newProps.categoriesPayload.categories)
       })
     }
   }
@@ -58,6 +51,7 @@ class HomeScreen extends Component {
   componentWillMount () {
     // setup initial Categories if Redux exist
     this.setupCategories()
+    
   }
 
   componentWillReceiveProps (newProps) {
@@ -70,6 +64,28 @@ class HomeScreen extends Component {
   }
   _handleClick (navigate) {
     navigate('DetailScreen')
+  }
+
+  renderRow(rowData){
+    if(!rowData){
+      return (
+        <View>Data Not Found</View>
+      )
+    } else{
+      return (
+        <Card
+          title={rowData.categories.name}
+          image={{uri:'http://lorempixel.com/400/200/food'}}>
+          <Button
+            onPress={() => this._handleClick(navigate)}
+            icon={{name: 'restaurant'}}
+            backgroundColor={Colors.blue}
+            fontFamily='Lato'
+            buttonStyle={style.btnHomeStyle}
+            title='VIEW DETAILS' />
+        </Card>
+        );
+      }
   }
 
   render () {
@@ -88,36 +104,18 @@ class HomeScreen extends Component {
             </View>
         </View>
         <CustomActivityIndicator fetching={this.props.categoriesFetching}/>
-        {/* <View>
+        <View style={{marginLeft:20}}>
+        <Text style={{fontWeight: 'bold', fontSize:20}}>
+            {this.props.entity_id === 280 ? "New York" : "New Jersey"}
+        </Text>
+        </View>
+        <View>
             <ListView 
             dataSource = { this.state.dataSource } 
-            renderRow = { (rowData) => 
-            <Text>  
-              { rowData } 
-            </Text> } 
+            renderRow = { this.renderRow.bind(this) }
+            enableEmptySections ={true}
             /> 
-        </View> */}
-        <View>
-        {
-          this.state.categories.map((cat, i) => {
-          return (
-          <Card
-            key={i}
-            title={cat.categories.name}
-            image={{uri:'http://lorempixel.com/400/200/food'}}>
-            <Button
-              onPress={() => this._handleClick(navigate)}
-              icon={{name: 'restaurant'}}
-              backgroundColor={Colors.blue}
-              fontFamily='Lato'
-              buttonStyle={style.btnHomeStyle}
-              title='VIEW DETAILS' />
-          </Card>
-          );
-          })
-        }
         </View>
-        
         </ScrollView>
         <View>
             <FooterComponent bgColor={Colors.maroon}></FooterComponent>
@@ -134,7 +132,8 @@ const mapStateToProps = (state) => {
   return {
     categoriesPayload: state.tomato.categoriesPayload,
     categoriesError: state.tomato.categoriesError,
-    categoriesFetching: state.tomato.categoriesFetching
+    categoriesFetching: state.tomato.categoriesFetching,
+    entity_id: state.tomato.entity_id
   }
 }
 

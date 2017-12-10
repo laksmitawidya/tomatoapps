@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, View, Dimensions } from 'react-native'
 import { Colors, Metrics } from '../Themes'
 import ExamplesRegistry from '../Services/ExamplesRegistry'
 import {
@@ -35,7 +35,15 @@ export default class CustomActivityIndicator extends Component {
   render () {
     if (this.props.fetching) {
       return (
-          <MaterialIndicator />
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          <WaveIndicator style={{
+            flexGrow:1,
+            height:null,
+            width:null,
+            alignItems: 'center',
+            justifyContent:'center'
+          }} />
+        </View>
       )
     } else {
       return null

@@ -1,12 +1,13 @@
 import { put, select } from 'redux-saga/effects'
 import GithubActions from '../Redux/GithubRedux'
 import { is } from 'ramda'
-
+import TomatoActions from '../Redux/TomatoRedux'
 // exported to make available for tests
 export const selectAvatar = (state) => state.github.avatar
 
 // process STARTUP actions
 export function * startup (action) {
+  yield put(TomatoActions.switchEntity(280))
   if (__DEV__ && console.tron) {
     // straight-up string logging
     console.tron.log('Hello, I\'m an example of how to log via Reactotron.')

@@ -40,7 +40,7 @@ export default class CountryListScreen extends Component {
         <List containerStyle={{marginBottom: 20}}>
         {
             list.map((l, i) => (
-            <ListItem
+            <ListItem switched ={false}
                 roundAvatar
                 avatar={{uri:l.avatar_url}}
                 key={i}
