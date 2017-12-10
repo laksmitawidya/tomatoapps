@@ -11,7 +11,6 @@ import {connect} from 'react-redux'
 import TomatoActions from '../Redux/TomatoRedux'
 import { Container, Header, Content, List, ListItem, Thumbnail, Body } from 'native-base';
 import Config from '../Config/AppConfig'
-import Navigator from '../Navigation/AppNavigation'
 
 class HomeScreen extends Component {
   constructor (props) {
@@ -64,14 +63,8 @@ class HomeScreen extends Component {
   }
   _handleClick (navigate, category_id) {
     //Config.current_category_id=category_id
-    // navigate('CategoriesDetailScreen', {category_id:category_id})
-      navigate("CategoriesDetailScreen",{},
-      {
-        type: "Navigate",
-        routeName: 'CategoriesDetailScreen',
-        params: {category_id:category_id}
-      }
-    );
+    navigate('CategoriesDetailScreen', {category_id:category_id})
+      
     
   }
 

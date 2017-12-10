@@ -25,34 +25,47 @@ class CategoriesDetailScreen extends Component {
     
   }
 
-  setupfilterByCity () {
-    
+  setupFilterByCity () {
+    const {state} = this.props.navigation;
+    if (!this.props.filterByCityRequestPayload) {
+        this.props.filterByCityRequest(this.props.entity_id, state.params.category_id)
+      } else {
+        this.setState({
+          restaurant: this.props.filterByCityRequestPayload.restaurants,
+          dataSource: this.state.dataSource.cloneWithRows(this.props.filterByCityPayload.restaurants)
+        })
+      }
   }
 
-  checkCategories (newProps) {
-    
+  checkRestaurant (newProps) {
+    if (newProps.FilterByCityPayload) {
+        this.setState({
+          restaurant: newProps.FilterByCityPayload.restaurants,
+          dataSource: this.state.dataSource.cloneWithRows(newProps.FilterByCityPayload.restaurants)
+        })
+      }
   }
 
  
   componentWillMount () {
-    // setup initial Categories if Redux exist
-    this.props.filterByCityRequest(this.props.entity_id, this.props.navigation.category_id)
-    
+    // setup initial data if Redux exist
+    this.setupFilterByCity()
   }
 
   componentWillReceiveProps (newProps) {
     // check new Categories after request the categories
-   
+    this.checkRestaurant(newProps)
   }
 
   _handleStories (navigate) {
     navigate('HomeScreen')
   }
-  _handleClick (navigate) {
-    navigate('DetailScreen')
+  _handleClick (navigate, rest_id) {
+    navigate('DetailScreen', {rest_id:rest_id})
   }
 
   renderRow(rowData){
+    console.log('Rowdata:'+ rowData);
     if(!rowData){
       return (
         <View>Data Not Found</View>
@@ -60,15 +73,12 @@ class CategoriesDetailScreen extends Component {
     } else{
       return (
         <Card
-          title={rowData.categories.name}
-          image={{uri:'http://lorempixel.com/400/200/food'}}>
-          <Button
-            onPress={() => this._handleClick(navigate)}
-            icon={{name: 'restaurant'}}
-            backgroundColor={Colors.blue}
-            fontFamily='Lato'
-            buttonStyle={style.btnHomeStyle}
-            title='VIEW DETAILS' />
+          title={rowData.restaurant.name}
+          image={{uri:rowData.restaurant.url}}
+          >
+          {/* onPress={() => this._handleClick(navigate, rowData.restaurant.id)} */}
+          <Text>{rowData.restaurant.location.address}</Text>
+          <Text>{rowData.restaurant.cuisines}</Text>
         </Card>
         );
       }
@@ -80,9 +90,9 @@ class CategoriesDetailScreen extends Component {
     <View style={{ flex:1 }}>
       <ScrollView>
         <View>
-        <HeaderLeftComponents onPress={() => this._handleStories(navigate)} text='Hamburger' textColor={Colors.snow}></HeaderLeftComponents>        
+        <HeaderLeftComponents onPress={() => this._handleStories(navigate)} text='Restaurant' textColor={Colors.snow}></HeaderLeftComponents>        
         </View>
-        <CustomActivityIndicator fetching={this.props.categoriesFetching}/>
+        <CustomActivityIndicator fetching={this.props.filterByCityFetching}/>
         <View>
             <ListView 
             dataSource = { this.state.dataSource } 
