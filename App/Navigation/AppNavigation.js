@@ -3,6 +3,7 @@ import LaunchScreen from '../Containers/LaunchScreen'
 import HomeScreen from '../Containers/HomeScreen'
 import CountryListScreen from '../Containers/CountryListScreen'
 import DetailScreen from '../Containers/DetailScreen'
+import CategoriesDetailScreen from '../Containers/CategoriesDetailScreen'
 
 import styles from './Styles/NavigationStyles'
 
@@ -12,6 +13,7 @@ const PrimaryNav = StackNavigator({
   HomeScreen: { screen: HomeScreen },
   CountryListScreen: { screen: CountryListScreen },
   DetailScreen: { screen: DetailScreen },
+  CategoriesDetailScreen: { screen: CategoriesDetailScreen }
 }, {
   // Default config for all screens
   headerMode: 'none',

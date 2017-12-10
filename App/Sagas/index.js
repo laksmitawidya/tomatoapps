@@ -12,7 +12,7 @@ import { TomatoTypes } from '../Redux/TomatoRedux'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-import { categoriesRequest,filterByCityRequest, switchEntity } from './TomatoSagas'
+import { categoriesRequest,filterByCityRequest } from './TomatoSagas'
 
 /* ------------- API ------------- */
 
@@ -33,7 +33,5 @@ export default function * root () {
     // search by city sagas
     takeLatest(TomatoTypes.FILTER_BY_CITY_REQUEST, filterByCityRequest),
 
-    // switch entity sagas
-    takeLatest(TomatoTypes.SWITCH_ENTITY, switchEntity)
   ])
 }

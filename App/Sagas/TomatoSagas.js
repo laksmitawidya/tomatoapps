@@ -32,17 +32,4 @@ export function * filterByCityRequest (action) {
   }  
 }
 
-export function * switchEntity (action) {
-  console.log("response action :", action)
-  // make the call to the api
-  const response = yield call(Api.callApi, AppConfig.baseURL+"search?entity_id="+action.entity_id+"&entity_type=city&order=asc", "GET","")
-  console.log("response :", response)
-  if (response.status === 200) {
-    yield put(TomatoActions.switchEntity(response.data))
-    console.log("response :", response)
-  } else {
-    yield put(TomatoActions.switchEntity(response.error))
-    console.log("error");
-  }  
-}
 
