@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, ScrollView, Image, View, Platform, Text, StyleSheet, ListView} from 'react-native'
+import { TouchableOpacity, ScrollView, Image, View, Platform, StyleSheet, ListView} from 'react-native'
 import  HeaderLeftComponents  from '../Components/HeaderLeftComponent'
 import  FooterComponent  from '../Components/FooterComponent'
 import  CustomActivityIndicator  from '../Components/CustomActivityIndicator'
 import { Images, Metrics, Colors } from '../Themes'
 import { Dropdown } from 'react-native-material-dropdown'
-import { h1, SearchBar, Avatar, Card, Button} from 'react-native-elements'
+//import { h1, SearchBar, Avatar, Card, Button} from 'react-native-elements'
 import style from '../Components/Styles/TomatoStyles'
 import {connect} from 'react-redux'
 import TomatoActions from '../Redux/TomatoRedux'
-import { Container, Header, Content, List, ListItem, Thumbnail, Body } from 'native-base';
+import { Badge, H3, Container, Header, Content, Text,List, ListItem, Body,Card, CardItem, Thumbnail, Button, Icon, Left,  Right } from 'native-base';
 import Config from '../Config/AppConfig'
 
 
@@ -20,15 +20,17 @@ class CategoriesDetailScreen extends Component {
       rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       restaurant: [],
-      dataSource: ds.cloneWithRows([]) 
+      dataSource: ds.cloneWithRows([]),
+      category_id: null
     }
     
   }
 
   setupFilterByCity () {
     const {state} = this.props.navigation;
+    category_id=state.params.category_id
     this.props.filterByCityRequest(this.props.entity_id, state.params.category_id)
-   
+    
   }
 
   checkRestaurant (newProps) {
@@ -53,9 +55,9 @@ class CategoriesDetailScreen extends Component {
   _handleStories (navigate) {
     navigate('HomeScreen')
   }
-  _handleClick (navigate, res_id) {
+  _handleClick (navigate, res_id, category_id) {
     console.log('Restaurannn hai :' +res_id);
-    navigate('DetailScreen', {res_id:res_id})
+    navigate('DetailScreen', {res_id:res_id, category_id:category_id})
   }
 
   renderRow(rowData){
@@ -67,16 +69,34 @@ class CategoriesDetailScreen extends Component {
     } else{
       return (
       <TouchableOpacity
-        onPress={() => this._handleClick(navigate, rowData.restaurant.R.res_id)}
+        onPress={() => this._handleClick(navigate, rowData.restaurant.R.res_id, category_id)}
       >
-        <Card
-          title={rowData.restaurant.name}
-          image={{uri:rowData.restaurant.featured_image}}>
-          <Text>{rowData.restaurant.location.address}</Text>
-          <Text>{rowData.restaurant.cuisines}</Text>
+        <Card>
+            <CardItem>
+              <Left>
+                <Body>
+                  <Text>{rowData.restaurant.name}</Text>
+                  <Text note>{rowData.restaurant.cuisines}</Text>
+                </Body>
+              </Left>
+              <Right>
+                <Badge success>
+                  <Text>{rowData.restaurant.user_rating.aggregate_rating}</Text>
+                </Badge>
+                <Text note>{rowData.restaurant.user_rating.rating_text}</Text>
+              </Right>
+            </CardItem>
+            <CardItem cardBody>
+              {rowData.restaurant.featured_image ? 
+              <Image source={{uri:rowData.restaurant.featured_image}} style={{height: 200, width: null, flex: 1}}/> 
+              : <Image source={Images.defaultImage} style={{height: 200, width: null, flex: 1}}/> }
+            </CardItem>
+            <CardItem>
+                <Text note>{rowData.restaurant.location.address}</Text>
+            </CardItem>
         </Card>
       </TouchableOpacity>
-        );
+      );
       }
   }
 

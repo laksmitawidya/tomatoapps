@@ -1,51 +1,36 @@
 import React, { Component } from 'react'
-import { ScrollView, Image, View, Platform, Text, StyleSheet } from 'react-native'
+import { ScrollView, Image, View, Platform, StyleSheet } from 'react-native'
 import  HeaderLeftComponents  from '../Components/HeaderLeftComponent'
 import  FooterComponent  from '../Components/FooterComponent'
 import { Images, Metrics, Colors } from '../Themes'
 import { Dropdown } from 'react-native-material-dropdown'
-import { Card, SearchBar, Avatar, ListItem, Button, List} from 'react-native-elements'
+//import { Card, SearchBar, Avatar, ListItem, Button, List} from 'react-native-elements'
 import {connect} from 'react-redux'
 import TomatoActions from '../Redux/TomatoRedux'
-
-const users = [
-  {
-    name: 'Soup',
-    avatar: 'https://static.pexels.com/photos/2232/vegetables-italian-pizza-restarestaurant.jpg',
-    description: 'The idea with React Native Elements is more about component structure than actual design.'
-  },
-  {
-    name: 'Cream',
-    avatar: 'https://static.pexels.com/photos/70497/pexels-photo-70497.jpeg',
-    description: 'The idea with React Native Elements is more about component structure than actual design.'
-  },
-  {
-    name: 'Coffee',
-    avatar: 'https://static.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg',
-    description: 'The idea with React Native Elements is more about component structure than actual design.'
-  }
-]
+import StarRating from 'react-native-star-rating'
+import { Label, Item, Badge, H3, Container, Header, Content, Text,List, ListItem, Body,Card, CardItem, Thumbnail, Button, Icon, Left,  Right } from 'native-base';
 
 
 class DetailScreen extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      restaurantDetail: []
+      restaurantDetail: [],
+      category_id:null
     }
     
   }
 
   setupGetRestaurant () {
     const {state} = this.props.navigation;
+    category_id=state.params.category_id
     this.props.getRestaurantRequest(state.params.res_id)  
   }
 
   checkRestaurant (newProps) {
-    console.log(newProps.getRestaurantPayload);
+    console.log("Haloooooooow: "+newProps.getRestaurantPayload.featured_image);
       this.setState({
-        
-          //restaurantDetail: newProps.getRestaurantPayload.restaurants,
+        restaurantDetail: newProps.getRestaurantPayload,
           // dataSource: this.state.dataSource.cloneWithRows(newProps.filterByCityPayload.restaurants)
       })
   }
@@ -54,8 +39,6 @@ class DetailScreen extends Component {
   componentWillMount () {
     // setup initial data if Redux exist
     this.setupGetRestaurant()
-    
-    
   }
 
   componentWillReceiveProps (newProps) {
@@ -63,8 +46,8 @@ class DetailScreen extends Component {
     this.checkRestaurant(newProps)
   }
 
-  _handleStories (navigate) {
-    navigate('CategoriesDetailScreen')
+  _handleStories (navigate,category_id) {
+    navigate('CategoriesDetailScreen', {category_id:category_id})
   }
 
 
@@ -74,27 +57,92 @@ class DetailScreen extends Component {
     <View style={{flex:1}}>
       <ScrollView>
         <View>
-        <HeaderLeftComponents onPress={() => this._handleStories(navigate)} text='Hamburger' textColor={Colors.snow}></HeaderLeftComponents>
+        <HeaderLeftComponents onPress={() => this._handleStories(navigate, category_id)} text={this.props.getRestaurantPayload.name} textColor={Colors.snow}></HeaderLeftComponents>
         </View>
         <View>
-        <Card
-          title='HELLO WORLD'
-          image={{uri:users.avatar}}>
+        <Card>
+          <CardItem>
+              {this.props.getRestaurantPayload.featured_image? 
+              <Image source={{uri:this.props.getRestaurantPayload.featured_image}} style={{height: 200, width: null, flex: 1}}/> 
+              : <Image source={Images.defaultImage} style={{height: 200, width: null, flex: 1}}/> }
+          </CardItem>
+          <CardItem>
+            <Left>
+              <Badge success>
+                  <Text>{this.props.getRestaurantPayload.user_rating.aggregate_rating}</Text>
+              </Badge>
+              <Text uppercase note>{this.props.getRestaurantPayload.user_rating.rating_text}</Text>
+            </Left>
+            <Right>
+              <Item>
+                <Icon name='thumbs-up' />
+                <Text note>{this.props.getRestaurantPayload.user_rating.votes}</Text>
+              </Item>
+            </Right>
+          </CardItem>  
+          <CardItem>
+            <Body>
+              <Text uppercase>{this.props.getRestaurantPayload.name}</Text>
+            </Body>
+          </CardItem>       
+        </Card>
+        <Card>
+          <CardItem>
+            <Body>
+              <Text uppercase>Address</Text>
+            </Body>
+          </CardItem>
+          <CardItem>
+            <Body>
+              <Text note>{this.props.getRestaurantPayload.location.address}</Text>
+              <Text note>{this.props.getRestaurantPayload.location.locality}</Text>
+              <Text note>{this.props.getRestaurantPayload.location.zipcode}</Text>
+            </Body>
+          </CardItem> 
+        </Card>
+        <Card>
+          <CardItem>
+            <Body>
+              <Text uppercase>Info</Text>
+            </Body>
+          </CardItem>
+          <CardItem>
+            <Body>
+              <Text note uppercase>Cuisines</Text>
+              <Text>{this.props.getRestaurantPayload.cuisines}</Text>
+              <Text note uppercase>Average Cost for Two</Text>
+              <Text>{this.props.getRestaurantPayload.average_cost_for_two} {this.props.getRestaurantPayload.currency} for two (approx.)</Text>
+            </Body>
+          </CardItem>
+        </Card>
+        <Card>
+          <CardItem>
+            <Body>
+              <Text uppercase>Facilities</Text>
+            </Body>
+          </CardItem>
+          <CardItem>
+            <Body>
+              <Text note uppercase>Online Delivery</Text>
+              {this.props.getRestaurantPayload.has_online_delivery===1? 
+                 <Text> <Icon android='md-checkmark-circle' /> </Text>
+              :  <Text> - </Text> }
+              <Text note uppercase>Table Booking</Text>
+              {this.props.getRestaurantPayload.has_table_booking===1? 
+                 <Text> <Icon android='md-checkmark-circle' /> </Text>
+              :  <Text> - </Text> }
+              <Text note uppercase>Delivering Now</Text>
+              {this.props.getRestaurantPayload.is_delivering_now===1? 
+                 <Text> <Icon android='md-checkmark-circle' /> </Text>
+              :  <Text> - </Text> }
+              <Text note uppercase>Switch To Order Menu</Text>
+              {this.props.getRestaurantPayload.switch_to_order_menu===1? 
+                 <Text> <Icon android='md-checkmark-circle' /> </Text>
+              :  <Text> - </Text> }
+            </Body>
+          </CardItem>
         </Card>
         </View>
-        <List containerStyle={{margin: 10}}>
-          {
-            users.map((l, i) => (
-              <ListItem
-                roundAvatar
-                avatar={{uri:l.avatar}}
-                key={i}
-                title={l.name}
-                hideChevron={true}
-              />
-            ))
-          }
-        </List>
       </ScrollView>
       <View>
         <FooterComponent bgColor={Colors.maroon}></FooterComponent>

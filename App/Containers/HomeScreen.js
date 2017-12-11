@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import { ScrollView, Image, View, Platform, Text, StyleSheet, ListView} from 'react-native'
+import { TouchableOpacity, ScrollView, Image, View, Platform, StyleSheet, ListView} from 'react-native'
 import  HeaderComponents  from '../Components/HeaderComponent'
 import  FooterComponent  from '../Components/FooterComponent'
 import  CustomActivityIndicator  from '../Components/CustomActivityIndicator'
 import { Images, Metrics, Colors } from '../Themes'
 import { Dropdown } from 'react-native-material-dropdown'
-import { SearchBar, Avatar, Card, Button} from 'react-native-elements'
 import style from '../Components/Styles/TomatoStyles'
 import {connect} from 'react-redux'
 import TomatoActions from '../Redux/TomatoRedux'
-import { Container, Header, Content, List, ListItem, Thumbnail, Body } from 'native-base';
+import { Item, Picker, Body, Container, Header, Content, Card, CardItem, Text, Icon, Right } from 'native-base';
 import Config from '../Config/AppConfig'
 
 class HomeScreen extends Component {
@@ -21,9 +20,16 @@ class HomeScreen extends Component {
       categories: [],
       categoryName:'',
       categoryId: 0,
-      dataSource: ds.cloneWithRows([]) 
+      dataSource: ds.cloneWithRows([]),
+      selected: "New York"
     }
     
+  }
+
+  onValueChange(value) {
+    this.setState({
+      selected: value
+    });
   }
 
   setupCategories () {
@@ -64,8 +70,6 @@ class HomeScreen extends Component {
   _handleClick (navigate, category_id) {
     //Config.current_category_id=category_id
     navigate('CategoriesDetailScreen', {category_id:category_id})
-      
-    
   }
 
   renderRow(rowData){
@@ -76,17 +80,14 @@ class HomeScreen extends Component {
       )
     } else{
       return (
-        <Card
-          title={rowData.categories.name}
-          image={{uri:'http://lorempixel.com/400/200/food'}}>
-          <Button
-            onPress={() => this._handleClick(navigate, rowData.categories.id)}
-            icon={{name: 'restaurant'}}
-            backgroundColor={Colors.blue}
-            fontFamily='Lato'
-            buttonStyle={style.btnHomeStyle}
-            title='VIEW DETAILS' />
-        </Card>
+        <TouchableOpacity onPress={() => this._handleClick(navigate, rowData.categories.id)}>
+        <Card>
+            <CardItem>
+              <Icon name="restaurant" style={{fontSize: 20, color: Colors.blue}} />
+              <Text>{rowData.categories.name}</Text>
+             </CardItem>
+           </Card>
+        </TouchableOpacity>
         );
       }
   }
@@ -97,34 +98,30 @@ class HomeScreen extends Component {
     <View style={{ flex:1 }}>
       <ScrollView>
         <View>
-          <HeaderComponents onPress={() => this._handleStories(navigate)} text='TOMATO' textColor={Colors.snow} iconColor={Colors.snow} ></HeaderComponents>
-            <View style={{margin : Metrics.doubleBaseMargin}}>
-            <SearchBar
-              lightTheme
-              // onChangeText={someMethod}
-              // onClearText={someMethod}
-              placeholder='Type Here...' />
-            </View>
-        </View>
+          <HeaderComponents onPress={() => this._handleStories(navigate)} text="TOMATO" textColor={Colors.snow} iconColor={Colors.snow} ></HeaderComponents>
+        </View >
         <CustomActivityIndicator fetching={this.props.categoriesFetching}/>
-        <View style={{marginLeft:20}}>
-        <Text style={{fontWeight: 'bold', fontSize:20}}>
-            {this.props.entity_id === 280 ? "New York" : "New Jersey"}
-        </Text>
-        </View>
-        <View>
-            <ListView 
-            dataSource = { this.state.dataSource } 
-            renderRow = { this.renderRow.bind(this) }
-            enableEmptySections ={true}
-            /> 
+        <View style={{margin:10}}>
+          <Picker
+            mode="dropdown"
+            headerBackButtonText="Back"
+            selectedValue={this.state.selected}
+            onValueChange={this.onValueChange.bind(this)}
+          >
+            <Item label="New York" value="280" />
+            <Item label="New Jersey" value="key1" />
+          </Picker>
+          <ListView 
+              dataSource = { this.state.dataSource } 
+              renderRow = { this.renderRow.bind(this) }
+              enableEmptySections ={true}
+              /> 
         </View>
         </ScrollView>
         <View>
             <FooterComponent bgColor={Colors.maroon}></FooterComponent>
         </View>
       </View>
-
       )
   }
 }

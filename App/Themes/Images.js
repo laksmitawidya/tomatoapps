@@ -20,7 +20,8 @@ const images = {
   hamburger: require('../Images/Icons/hamburger.png'),
   backButton: require('../Images/Icons/back-button.png'),
   closeButton: require('../Images/Icons/close-button.png'),
-  imageBg: require('../Images/splash.jpg')
+  imageBg: require('../Images/splash.jpg'),
+  defaultImage : require('../Images/default-img.gif'),
 }
 
 export default images

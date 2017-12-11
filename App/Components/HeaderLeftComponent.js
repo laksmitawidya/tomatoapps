@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity} from 'react-native'
 import styles from './Styles/TomatoStyles'
 import { Images, Colors } from '../Themes'
 import PropTypes from 'prop-types'
@@ -18,7 +18,7 @@ export default class HeaderComponent extends Component {
         <Header
           backgroundColor={this.props.bgColor}
           centerComponent={{ text: this.props.text, style: {fontSize: 18, color: this.props.textColor } }}
-          leftComponent={<Icon onPress={this.props.onPress}  name='arrow-back' type='MaterialIcons' color={Colors.snow} />}
+          leftComponent={<TouchableOpacity onPress={this.props.onPress} ><Icon name='arrow-back' type='MaterialIcons' color={Colors.snow} /></TouchableOpacity>}
         /> 
         )
       }

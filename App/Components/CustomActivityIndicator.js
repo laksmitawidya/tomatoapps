@@ -15,12 +15,7 @@ import {
     WaveIndicator
   } from 'react-native-indicators';
 
-// Note that this file (App/Components/RoundedButton) needs to be
-// imported in your app somewhere, otherwise your component won't be
-// compiled and added to the examples dev screen.
 
-// Ignore in coverage report
-/* istanbul ignore next */
 ExamplesRegistry.addComponentExample('Custom Activity Indicator', () =>
   <CustomActivityIndicator
     fetching
@@ -41,7 +36,8 @@ export default class CustomActivityIndicator extends Component {
             height:null,
             width:null,
             alignItems: 'center',
-            justifyContent:'center'
+            justifyContent:'center',
+            position: 'absolute'
           }} />
         </View>
       )
