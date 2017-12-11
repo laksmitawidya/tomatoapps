@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { TouchableOpacity, ScrollView, Image, View, Platform, StyleSheet, ListView} from 'react-native'
+import { ImageBackground, TouchableOpacity, ScrollView, Image, View, Platform, StyleSheet, ListView} from 'react-native'
 import  HeaderComponents  from '../Components/HeaderComponent'
 import  FooterComponent  from '../Components/FooterComponent'
 import  CustomActivityIndicator  from '../Components/CustomActivityIndicator'
@@ -21,17 +21,18 @@ class HomeScreen extends Component {
       categoryName:'',
       categoryId: 0,
       dataSource: ds.cloneWithRows([]),
-      selected: "New York"
+      selected: 280
     }
     
   }
-
+  
   onValueChange(value) {
     this.setState({
       selected: value
     });
   }
 
+  
   setupCategories () {
     if (!this.props.categoriesPayload) {
       this.props.categoriesRequest()
@@ -67,9 +68,9 @@ class HomeScreen extends Component {
   _handleStories (navigate) {
     navigate('CountryListScreen')
   }
-  _handleClick (navigate, category_id) {
+  _handleClick (navigate, category_id, category_name) {
     //Config.current_category_id=category_id
-    navigate('CategoriesDetailScreen', {category_id:category_id})
+    navigate('CategoriesDetailScreen', {category_id:category_id, category_name:category_name})
   }
 
   renderRow(rowData){
@@ -80,8 +81,8 @@ class HomeScreen extends Component {
       )
     } else{
       return (
-        <TouchableOpacity onPress={() => this._handleClick(navigate, rowData.categories.id)}>
-        <Card>
+        <TouchableOpacity onPress={() => this._handleClick(navigate, rowData.categories.id, rowData.categories.name)}>
+          <Card>
             <CardItem>
               <Icon name="restaurant" style={{fontSize: 20, color: Colors.blue}} />
               <Text>{rowData.categories.name}</Text>
@@ -106,14 +107,14 @@ class HomeScreen extends Component {
             mode="dropdown"
             headerBackButtonText="Back"
             selectedValue={this.state.selected}
-            onValueChange={this.onValueChange.bind(this)}
-          >
+            onValueChange={this.onValueChange.bind(this)}>
             <Item label="New York" value="280" />
-            <Item label="New Jersey" value="key1" />
+            <Item label="New Jersey" value="3959" />
           </Picker>
+          
           <ListView 
               dataSource = { this.state.dataSource } 
-              renderRow = { this.renderRow.bind(this) }
+              renderRow = {this.renderRow.bind(this)}
               enableEmptySections ={true}
               /> 
         </View>

@@ -30,14 +30,13 @@ export default class CustomActivityIndicator extends Component {
   render () {
     if (this.props.fetching) {
       return (
-        <View style={{flex: 1, justifyContent: 'center'}}>
+        <View style={{flex: 1, justifyContent: 'center', zIndex: 1}}>
           <WaveIndicator style={{
             flexGrow:1,
             height:null,
             width:null,
             alignItems: 'center',
-            justifyContent:'center',
-            position: 'absolute'
+            justifyContent:'center'
           }} />
         </View>
       )

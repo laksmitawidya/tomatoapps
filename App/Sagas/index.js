@@ -12,7 +12,7 @@ import { TomatoTypes } from '../Redux/TomatoRedux'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-import { categoriesRequest,filterByCityRequest, getRestaurantRequest } from './TomatoSagas'
+import { categoriesRequest,filterByCityRequest, getRestaurantRequest  } from './TomatoSagas'
 
 /* ------------- API ------------- */
 

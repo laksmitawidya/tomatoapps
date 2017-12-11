@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Image, View, Platform, StyleSheet } from 'react-native'
+import { ScrollView, Image, View, Platform, StyleSheet, TouchableOpacity } from 'react-native'
 import  HeaderLeftComponents  from '../Components/HeaderLeftComponent'
 import  FooterComponent  from '../Components/FooterComponent'
 import { Images, Metrics, Colors } from '../Themes'
@@ -16,7 +16,8 @@ class DetailScreen extends Component {
     super(props)
     this.state = {
       restaurantDetail: [],
-      category_id:null
+      category_id:null,
+      category_name:null
     }
     
   }
@@ -24,11 +25,11 @@ class DetailScreen extends Component {
   setupGetRestaurant () {
     const {state} = this.props.navigation;
     category_id=state.params.category_id
+    category_name=state.params.category_name
     this.props.getRestaurantRequest(state.params.res_id)  
   }
 
-  checkRestaurant (newProps) {
-    console.log("Haloooooooow: "+newProps.getRestaurantPayload.featured_image);
+  checkRestaurant (newProps) {;
       this.setState({
         restaurantDetail: newProps.getRestaurantPayload,
           // dataSource: this.state.dataSource.cloneWithRows(newProps.filterByCityPayload.restaurants)
@@ -46,8 +47,8 @@ class DetailScreen extends Component {
     this.checkRestaurant(newProps)
   }
 
-  _handleStories (navigate,category_id) {
-    navigate('CategoriesDetailScreen', {category_id:category_id})
+  _handleStories (navigate,category_id, category_name) {
+    navigate('CategoriesDetailScreen', {category_id:category_id,category_name:category_name})
   }
 
 
@@ -57,15 +58,22 @@ class DetailScreen extends Component {
     <View style={{flex:1}}>
       <ScrollView>
         <View>
-        <HeaderLeftComponents onPress={() => this._handleStories(navigate, category_id)} text={this.props.getRestaurantPayload.name} textColor={Colors.snow}></HeaderLeftComponents>
+        <HeaderLeftComponents onPress={() => this._handleStories(navigate, category_id, category_name)} text={this.props.getRestaurantPayload.name} textColor={Colors.snow}></HeaderLeftComponents>
         </View>
         <View>
         <Card>
+          <TouchableOpacity>
+            <CardItem>
+                {this.props.getRestaurantPayload.featured_image? 
+                <Image source={{uri:this.props.getRestaurantPayload.featured_image}} style={{height: 200, width: null, flex: 1}}/> 
+                : <Image source={Images.defaultImage} style={{height: 200, width: null, flex: 1}}/> }
+            </CardItem>
+          </TouchableOpacity>
           <CardItem>
-              {this.props.getRestaurantPayload.featured_image? 
-              <Image source={{uri:this.props.getRestaurantPayload.featured_image}} style={{height: 200, width: null, flex: 1}}/> 
-              : <Image source={Images.defaultImage} style={{height: 200, width: null, flex: 1}}/> }
-          </CardItem>
+            <Body>
+              <Text uppercase>{this.props.getRestaurantPayload.name}</Text>
+            </Body>
+          </CardItem>  
           <CardItem>
             <Left>
               <Badge success>
@@ -79,11 +87,6 @@ class DetailScreen extends Component {
                 <Text note>{this.props.getRestaurantPayload.user_rating.votes}</Text>
               </Item>
             </Right>
-          </CardItem>  
-          <CardItem>
-            <Body>
-              <Text uppercase>{this.props.getRestaurantPayload.name}</Text>
-            </Body>
           </CardItem>       
         </Card>
         <Card>

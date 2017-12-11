@@ -21,7 +21,8 @@ class CategoriesDetailScreen extends Component {
     this.state = {
       restaurant: [],
       dataSource: ds.cloneWithRows([]),
-      category_id: null
+      category_id: null, 
+      category_name:null
     }
     
   }
@@ -29,6 +30,7 @@ class CategoriesDetailScreen extends Component {
   setupFilterByCity () {
     const {state} = this.props.navigation;
     category_id=state.params.category_id
+    category_name=state.params.category_name
     this.props.filterByCityRequest(this.props.entity_id, state.params.category_id)
     
   }
@@ -55,9 +57,8 @@ class CategoriesDetailScreen extends Component {
   _handleStories (navigate) {
     navigate('HomeScreen')
   }
-  _handleClick (navigate, res_id, category_id) {
-    console.log('Restaurannn hai :' +res_id);
-    navigate('DetailScreen', {res_id:res_id, category_id:category_id})
+  _handleClick (navigate, res_id, category_id, category_name) {
+    navigate('DetailScreen', {res_id:res_id, category_id:category_id,category_name:category_name})
   }
 
   renderRow(rowData){
@@ -69,7 +70,7 @@ class CategoriesDetailScreen extends Component {
     } else{
       return (
       <TouchableOpacity
-        onPress={() => this._handleClick(navigate, rowData.restaurant.R.res_id, category_id)}
+        onPress={() => this._handleClick(navigate, rowData.restaurant.R.res_id, category_id, category_name)}
       >
         <Card>
             <CardItem>
@@ -106,7 +107,7 @@ class CategoriesDetailScreen extends Component {
     <View style={{ flex:1 }}>
       <ScrollView>
         <View>
-        <HeaderLeftComponents onPress={() => this._handleStories(navigate)} text='Restaurant' textColor={Colors.snow}></HeaderLeftComponents>        
+        <HeaderLeftComponents onPress={() => this._handleStories(navigate)} text={category_name} textColor={Colors.snow}></HeaderLeftComponents>        
         </View>
         <CustomActivityIndicator fetching={this.props.filterByCityFetching}/>
         <View>
