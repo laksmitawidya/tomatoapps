@@ -40,6 +40,9 @@ export const INITIAL_STATE = Immutable({
   entity_id : 280, 
   category_id: null,
 
+  getRestaurantPayload: null,
+  getRestaurantError: null,
+  getRestaurantFetching: false,
   res_id:null
 })
 
@@ -69,7 +72,9 @@ export const filterByCityFailure = (state, action) => state.merge({ filterByCity
 
 export const switchEntity = (state, action) => state.merge({ entity_id: action.entity_id })
 
-export const getRestaurantRequest = (state, action) => state.merge({ getRestaurantFetching: true, res_id:action.restaurant_id })
+/* Get Restaurant  */
+
+export const getRestaurantRequest = (state, action) => state.merge({ getRestaurantFetching: true, res_id:action.res_id })
 
 export const getRestaurantSuccess = (state, action) => {
     const { getRestaurantPayload } = action

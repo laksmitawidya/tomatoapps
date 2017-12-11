@@ -36,31 +36,31 @@ class DetailScreen extends Component {
     
   }
 
-  setupFilterByCity () {
-    // const {state} = this.props.navigation;
-    // this.props.filterByCityRequest(this.props.entity_id, state.params.category_id)
-      
+  setupGetRestaurant () {
+    const {state} = this.props.navigation;
+    this.props.getRestaurantRequest(state.params.res_id)  
   }
 
   checkRestaurant (newProps) {
-      // this.setState({
-      //     restaurant: newProps.filterByCityPayload.restaurants,
-      //     dataSource: this.state.dataSource.cloneWithRows(newProps.filterByCityPayload.restaurants)
-      // })
+    console.log(newProps.getRestaurantPayload);
+      this.setState({
+        
+          //restaurantDetail: newProps.getRestaurantPayload.restaurants,
+          // dataSource: this.state.dataSource.cloneWithRows(newProps.filterByCityPayload.restaurants)
+      })
   }
 
  
   componentWillMount () {
     // setup initial data if Redux exist
-    const {state} = this.props.navigation;
-    console.log('res_id: '+state.params.res_id);
-    this.props.getRestaurantRequest(state.params.res_id)
+    this.setupGetRestaurant()
+    
     
   }
 
   componentWillReceiveProps (newProps) {
     // check new Categories after request the categories
-    // this.checkRestaurant(newProps)
+    this.checkRestaurant(newProps)
   }
 
   _handleStories (navigate) {

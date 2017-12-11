@@ -33,7 +33,7 @@ export function * filterByCityRequest (action) {
 }
 
 export function * getRestaurantRequest (action) {
-  console.log('Get Restaurant: '+ action);
+  console.log('Get Restaurantssssssssss: '+ action.res_id);
   // make the call to the api
   const response = yield call(Api.callApi, AppConfig.baseURL+"restaurant?res_id="+action.res_id, "GET","")
   console.log("response :", response)
