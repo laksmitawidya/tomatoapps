@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Image, View, Platform, Text, StyleSheet, ListView} from 'react-native'
+import { TouchableOpacity, ScrollView, Image, View, Platform, Text, StyleSheet, ListView} from 'react-native'
 import  HeaderLeftComponents  from '../Components/HeaderLeftComponent'
 import  FooterComponent  from '../Components/FooterComponent'
 import  CustomActivityIndicator  from '../Components/CustomActivityIndicator'
@@ -27,29 +27,22 @@ class CategoriesDetailScreen extends Component {
 
   setupFilterByCity () {
     const {state} = this.props.navigation;
-    if (!this.props.filterByCityRequestPayload) {
-        this.props.filterByCityRequest(this.props.entity_id, state.params.category_id)
-      } else {
-        this.setState({
-          restaurant: this.props.filterByCityRequestPayload.restaurants,
-          dataSource: this.state.dataSource.cloneWithRows(this.props.filterByCityPayload.restaurants)
-        })
-      }
+    this.props.filterByCityRequest(this.props.entity_id, state.params.category_id)
+   
   }
 
   checkRestaurant (newProps) {
-    if (newProps.FilterByCityPayload) {
-        this.setState({
-          restaurant: newProps.FilterByCityPayload.restaurants,
-          dataSource: this.state.dataSource.cloneWithRows(newProps.FilterByCityPayload.restaurants)
-        })
-      }
+      this.setState({
+          restaurant: newProps.filterByCityPayload.restaurants,
+          dataSource: this.state.dataSource.cloneWithRows(newProps.filterByCityPayload.restaurants)
+      })
   }
 
  
   componentWillMount () {
     // setup initial data if Redux exist
     this.setupFilterByCity()
+    
   }
 
   componentWillReceiveProps (newProps) {
@@ -60,26 +53,29 @@ class CategoriesDetailScreen extends Component {
   _handleStories (navigate) {
     navigate('HomeScreen')
   }
-  _handleClick (navigate, rest_id) {
-    navigate('DetailScreen', {rest_id:rest_id})
+  _handleClick (navigate, res_id) {
+    console.log('Restaurannn hai :' +res_id);
+    navigate('DetailScreen', {res_id:res_id})
   }
 
   renderRow(rowData){
-    console.log('Rowdata:'+ rowData);
+    const { navigate } = this.props.navigation
     if(!rowData){
       return (
         <View>Data Not Found</View>
       )
     } else{
       return (
+      <TouchableOpacity
+        onPress={() => this._handleClick(navigate, rowData.restaurant.R.res_id)}
+      >
         <Card
           title={rowData.restaurant.name}
-          image={{uri:rowData.restaurant.url}}
-          >
-          {/* onPress={() => this._handleClick(navigate, rowData.restaurant.id)} */}
+          image={{uri:rowData.restaurant.featured_image}}>
           <Text>{rowData.restaurant.location.address}</Text>
           <Text>{rowData.restaurant.cuisines}</Text>
         </Card>
+      </TouchableOpacity>
         );
       }
   }
@@ -115,7 +111,7 @@ CategoriesDetailScreen.propTypes = {}
 const mapStateToProps = (state) => {
   return {
     filterByCityPayload: state.tomato.filterByCityPayload,
-    filterByCityError: state.tomato.filterByCitysError,
+    filterByCityError: state.tomato.filterByCityError,
     filterByCityFetching: state.tomato.filterByCityFetching,
 
     entity_id: state.tomato.entity_id

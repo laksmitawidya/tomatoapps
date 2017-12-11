@@ -32,4 +32,16 @@ export function * filterByCityRequest (action) {
   }  
 }
 
-
+export function * getRestaurantRequest (action) {
+  console.log('Get Restaurant: '+ action);
+  // make the call to the api
+  const response = yield call(Api.callApi, AppConfig.baseURL+"restaurant?res_id="+action.res_id, "GET","")
+  console.log("response :", response)
+  if (response.status === 200) {
+    yield put(TomatoActions.getRestaurantSuccess(response.data))
+    console.log("response :", response)
+  } else {
+    yield put(TomatoActions.getRestaurantFailure(response.error))
+    console.log("error");
+  }  
+}

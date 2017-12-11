@@ -12,7 +12,7 @@ import { TomatoTypes } from '../Redux/TomatoRedux'
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-import { categoriesRequest,filterByCityRequest } from './TomatoSagas'
+import { categoriesRequest,filterByCityRequest, getRestaurantRequest } from './TomatoSagas'
 
 /* ------------- API ------------- */
 
@@ -32,6 +32,9 @@ export default function * root () {
 
     // search by city sagas
     takeLatest(TomatoTypes.FILTER_BY_CITY_REQUEST, filterByCityRequest),
+
+     // getRestaurant sagas
+     takeLatest(TomatoTypes.GET_RESTAURANT_REQUEST, getRestaurantRequest)
 
   ])
 }

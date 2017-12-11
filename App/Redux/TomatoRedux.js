@@ -15,6 +15,11 @@ const { Types, Creators } = createActions({
   filterByCityFailure : ['filterByCityError'],
 
   switchEntity: ['entity_id'],
+
+  getRestaurantRequest : ['entity_id', 'category_id', 'restaurant_id'],
+  getRestaurantSuccess : ['getRestaurantPayload'],
+  getRestaurantFailure : ['getRestaurantError'],
+
 })
 
 export const TomatoTypes = Types
@@ -33,7 +38,9 @@ export const INITIAL_STATE = Immutable({
   filterByCityError: null,
   filterByCityFetching: false,
   entity_id : 280, 
-  category_id: null
+  category_id: null,
+
+  res_id:null
 })
 
 /* ------------- Reducers Categories Request ------------- */
@@ -62,6 +69,15 @@ export const filterByCityFailure = (state, action) => state.merge({ filterByCity
 
 export const switchEntity = (state, action) => state.merge({ entity_id: action.entity_id })
 
+export const getRestaurantRequest = (state, action) => state.merge({ getRestaurantFetching: true, res_id:action.restaurant_id })
+
+export const getRestaurantSuccess = (state, action) => {
+    const { getRestaurantPayload } = action
+    return state.merge({ getRestaurantFetching:false, getRestaurantError:null, getRestaurantPayload })
+}
+
+export const getRestaurantFailure = (state, action) => state.merge({ getRestaurantFetching: false, getRestaurantError: action.getRestaurantError })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -75,6 +91,10 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FILTER_BY_CITY_SUCCESS]: filterByCitySuccess,
   [Types.FILTER_BY_CITY_FAILURE]: filterByCityFailure,
 
-  [Types.SWITCH_ENTITY]: switchEntity
+  [Types.SWITCH_ENTITY]: switchEntity,
+
+  [Types.GET_RESTAURANT_REQUEST]: getRestaurantRequest,
+  [Types.GET_RESTAURANT_SUCCESS]: getRestaurantSuccess,
+  [Types.GET_RESTAURANT_FAILURE]: getRestaurantFailure
 
 })
