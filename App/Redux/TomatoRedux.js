@@ -16,7 +16,7 @@ const { Types, Creators } = createActions({
 
   switchEntity: ['entity_id'],
 
-  getRestaurantRequest : ['entity_id', 'category_id', 'restaurant_id'],
+  getRestaurantRequest : ['restaurant_id'],
   getRestaurantSuccess : ['getRestaurantPayload'],
   getRestaurantFailure : ['getRestaurantError'],
 
