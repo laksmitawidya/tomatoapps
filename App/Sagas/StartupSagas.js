@@ -7,6 +7,8 @@ export const selectAvatar = (state) => state.github.avatar
 
 // process STARTUP actions
 export function * startup (action) {
+
+  // switch the entity id to 280 in startup
   yield put(TomatoActions.switchEntity(280))
   if (__DEV__ && console.tron) {
     // straight-up string logging
@@ -36,6 +38,6 @@ export function * startup (action) {
   const avatar = yield select(selectAvatar)
   // only get if we don't have it yet
   if (!is(String, avatar)) {
-    yield put(GithubActions.userRequest('GantMan'))
+    //yield put(GithubActions.userRequest('GantMan'))
   }
 }
