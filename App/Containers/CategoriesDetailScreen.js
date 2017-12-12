@@ -5,7 +5,7 @@ import  FooterComponent  from '../Components/FooterComponent'
 import  CustomActivityIndicator  from '../Components/CustomActivityIndicator'
 import { Images, Metrics, Colors } from '../Themes'
 import { Dropdown } from 'react-native-material-dropdown'
-//import { h1, SearchBar, Avatar, Card, Button} from 'react-native-elements'
+import { SearchBar } from 'react-native-elements'
 import style from '../Components/Styles/TomatoStyles'
 import {connect} from 'react-redux'
 import TomatoActions from '../Redux/TomatoRedux'
@@ -16,23 +16,23 @@ import Config from '../Config/AppConfig'
 class CategoriesDetailScreen extends Component {
   constructor (props) {
     super(props)
-    const ds = new ListView.DataSource({ 
+    const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       restaurant: [],
       dataSource: ds.cloneWithRows([]),
-      category_id: null, 
-      category_name:null
+      category_id: null,
+      category_name:""
     }
-    
+
   }
 
   setupFilterByCity () {
     const {state} = this.props.navigation;
-    category_id=state.params.category_id
-    category_name=state.params.category_name
+    this.state.category_id=state.params.category_id
+    this.state.category_name=state.params.category_name
     this.props.filterByCityRequest(this.props.entity_id, state.params.category_id)
-    
+
   }
 
   checkRestaurant (newProps) {
@@ -42,11 +42,11 @@ class CategoriesDetailScreen extends Component {
       })
   }
 
- 
+
   componentWillMount () {
     // setup initial data if Redux exist
     this.setupFilterByCity()
-    
+
   }
 
   componentWillReceiveProps (newProps) {
@@ -57,8 +57,8 @@ class CategoriesDetailScreen extends Component {
   _handleStories (navigate) {
     navigate('HomeScreen')
   }
-  _handleClick (navigate, res_id, category_id, category_name) {
-    navigate('DetailScreen', {res_id:res_id, category_id:category_id,category_name:category_name})
+  _handleClick (navigate, res_id) {
+    navigate('DetailScreen', {res_id:res_id, category_id:this.state.category_id,category_name:this.state.category_name})
   }
 
   renderRow(rowData){
@@ -70,7 +70,7 @@ class CategoriesDetailScreen extends Component {
     } else{
       return (
       <TouchableOpacity
-        onPress={() => this._handleClick(navigate, rowData.restaurant.R.res_id, category_id, category_name)}
+        onPress={() => this._handleClick(navigate, rowData.restaurant.R.res_id)}
       >
         <Card>
             <CardItem>
@@ -88,8 +88,8 @@ class CategoriesDetailScreen extends Component {
               </Right>
             </CardItem>
             <CardItem cardBody>
-              {rowData.restaurant.featured_image ? 
-              <Image source={{uri:rowData.restaurant.featured_image}} style={{height: 200, width: null, flex: 1}}/> 
+              {rowData.restaurant.featured_image ?
+              <Image source={{uri:rowData.restaurant.featured_image}} style={{height: 200, width: null, flex: 1}}/>
               : <Image source={Images.defaultImage} style={{height: 200, width: null, flex: 1}}/> }
             </CardItem>
             <CardItem>
@@ -101,21 +101,41 @@ class CategoriesDetailScreen extends Component {
       }
   }
 
+  searchData(value){
+    let restoData = this.state.restaurant
+    var newRestoData = []
+    for (var i = 0;i < restoData.length ; i++) {
+      if (restoData[i].restaurant.name.includes(value)){
+        newRestoData.push(restoData[i])
+      }
+    }
+    this.setState({
+      dataSource: this.state.dataSource.cloneWithRows(newRestoData),
+    })
+  }
+
   render () {
     const { navigate } = this.props.navigation
     return (
     <View style={{ flex:1 }}>
       <ScrollView>
         <View>
-        <HeaderLeftComponents onPress={() => this._handleStories(navigate)} text={category_name} textColor={Colors.snow}></HeaderLeftComponents>        
+        <HeaderLeftComponents onPress={() => this._handleStories(navigate)} text={this.state.category_name} textColor={Colors.snow}></HeaderLeftComponents>
+          <View style={{margin : Metrics.doubleBaseMargin}}>
+            <SearchBar
+              lightTheme
+              onChangeText={(value)=>this.searchData(value)}
+              // onClearText={someMethod}
+              placeholder='Search Restaurants' />
+          </View>
         </View>
         <CustomActivityIndicator fetching={this.props.filterByCityFetching}/>
         <View>
-            <ListView 
-            dataSource = { this.state.dataSource } 
+            <ListView
+            dataSource = { this.state.dataSource }
             renderRow = { this.renderRow.bind(this) }
             enableEmptySections ={true}
-            /> 
+            />
         </View>
         </ScrollView>
         <View>
