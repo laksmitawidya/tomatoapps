@@ -16,13 +16,13 @@ export default class FooterComponent extends Component {
                 <Footer tabActiveBgColor={this.props.bgColor}>
                     <FooterTab>
                         <Button onPress={this.props.onPressBtn1}>
-                            <Icon name='ios-apps-outline' />
+                            <Icon name='ios-apps' />
                         </Button>
                         <Button onPress={this.props.onPressBtn2}>
                             <Icon name='ios-camera-outline' />
                         </Button>
                         <Button active onPress={this.props.onPressBtn2}>
-                            <Icon name='ios-compass' />
+                            <Icon name='ios-compass-outline' />
                         </Button>
                         <Button onPress={this.props.onPressBtn3}>
                             <Icon name='ios-contact-outline' />

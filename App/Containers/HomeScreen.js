@@ -1,16 +1,13 @@
-import React, { Component } from 'react'
-import { ImageBackground, TouchableOpacity, ScrollView, Image, View, Platform, StyleSheet, ListView} from 'react-native'
-import  HeaderComponents  from '../Components/HeaderComponent'
-import  FooterComponent  from '../Components/FooterComponent'
-import  CustomActivityIndicator  from '../Components/CustomActivityIndicator'
-import { Images, Metrics, Colors } from '../Themes'
-import { Dropdown } from 'react-native-material-dropdown'
-import style from '../Components/Styles/TomatoStyles'
+import React, {Component} from 'react'
+import {ListView, ScrollView, TouchableOpacity, View} from 'react-native'
+import HeaderComponents from '../Components/HeaderComponent'
+import FooterComponent from '../Components/FooterComponent'
+import CustomActivityIndicator from '../Components/CustomActivityIndicator'
+import {Colors, Fonts} from '../Themes'
 import {connect} from 'react-redux'
 import TomatoActions from '../Redux/TomatoRedux'
-import { Item, Picker, Body, Container, Header, Content, Card, CardItem, Text, Icon, Right } from 'native-base';
-import { Icon as IconTwo } from 'react-native-elements';
-import Config from '../Config/AppConfig'
+import {Card, CardItem, Container, Content, Header, Icon, Item, Picker, Right, Text} from 'native-base';
+import {Icon as IconTwo} from 'react-native-elements';
 
 class HomeScreen extends Component {
   constructor (props) {
