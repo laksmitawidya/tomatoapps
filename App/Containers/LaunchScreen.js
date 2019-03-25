@@ -11,7 +11,7 @@ import styles from './Styles/LaunchScreenStyles'
 
 export default class LaunchScreen extends Component {
   _handleStories (navigate) {
-    navigate('HomeScreen')
+    navigate('HomeScLareen')
   }
 
   render () {
